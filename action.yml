@@ -15,6 +15,13 @@ inputs:
     required: false
     default: ${{ github.event.repository.name }}
     description: Image name
+  mvn_token:
+    required: false
+    description: 'Maven token'
+  mvn_username:
+    required: false
+    description: 'Maven username'
+
 outputs:
   tags:
     description: 'List of docker tags'
@@ -53,8 +60,8 @@ runs:
       name: Build with Maven
       if: ${{ inputs.type == 'maven' }}
       env:
-        MVN_TOKEN_REF: ${{ secrets.MVN_TOKEN }}
-        MVN_USERNAME_REF: ${{ secrets.MVN_USERNAME }}
+        MVN_TOKEN_REF: ${{ inputs.mvn_token }}
+        MVN_USERNAME_REF: ${{ inputs.mvn_username }}
       run: echo ::set-output name=pom_version::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT//g')
     -
       name: Prepare
