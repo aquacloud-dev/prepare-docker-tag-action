@@ -51,19 +51,14 @@ runs:
       if: ${{ inputs.type == 'maven' }}
       with:
         java-version: 17
-        server-id: github
-        server-username: MVN_USERNAME_REF
-        server-password: MVN_TOKEN_REF
     -
       id: mvn
       shell: bash
-      name: Build with Maven
+      name: Read version via mvn
       if: ${{ inputs.type == 'maven' }}
-      env:
-        MVN_TOKEN_REF: ${{ inputs.mvn_token }}
-        MVN_USERNAME_REF: ${{ inputs.mvn_username }}
       run: echo ::set-output name=pom_version::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT//g')
     -
+      id: prep
       name: Prepare
       shell: bash
       run: |
