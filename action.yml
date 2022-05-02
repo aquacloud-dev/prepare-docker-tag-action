@@ -15,20 +15,19 @@ inputs:
     required: false
     default: ${{ github.event.repository.name }}
     description: Image name
-
 outputs:
   tags:
     description: 'List of docker tags'
-    value: ${{ steps.prep.tags }}
+    value: ${{ steps.prepare.outputs.tags }}
   version:
     description: 'List of docker version'
-    value: ${{ steps.prep.version }}
+    value: ${{ steps.prepare.outputs.version }}
   mvnVersion:
     description: 'List of maven version'
-    value: ${{ steps.prep.mvnVersion }}
+    value: ${{ steps.prepare.outputs.mvnVersion }}
   pkgVersion:
     description: 'List of package version'
-    value: ${{ steps.prep.pkgVersion }}
+    value: ${{ steps.prepare.outputs.pkgVersion }}
 runs:
   using: composite
   steps:
@@ -52,7 +51,7 @@ runs:
       if: ${{ inputs.type == 'maven' }}
       run: echo ::set-output name=pom_version::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT//g')
     -
-      id: prep
+      id: prepare
       name: Prepare
       shell: bash
       run: |
@@ -78,7 +77,7 @@ runs:
           PACKAGEJSON_VERSION=${{ steps.package-version.outputs.version }}
 
           if [ -z $PACKAGEJSON_VERSION ]; then
-            TAGS="${TAGS},${DOCKER_IMAGE}:${PACKAGEJSON_VERSION}"
+            TAGS="$TAGS,${DOCKER_IMAGE}:${PACKAGEJSON_VERSION}"
           fi
         fi
 
@@ -86,7 +85,7 @@ runs:
           MANIFEST_VERSION=${{ steps.mvn.outputs.pom_version }}
 
           if [ -z $MANIFEST_VERSION ]; then
-            TAGS="${TAGS},${DOCKER_IMAGE}:${MANIFEST_VERSION}"
+            TAGS="$TAGS,${DOCKER_IMAGE}:${MANIFEST_VERSION}"
           fi
         fi
 
