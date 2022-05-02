@@ -15,12 +15,6 @@ inputs:
     required: false
     default: ${{ github.event.repository.name }}
     description: Image name
-  mvn_token:
-    required: false
-    description: 'Maven token'
-  mvn_username:
-    required: false
-    description: 'Maven username'
 
 outputs:
   tags:

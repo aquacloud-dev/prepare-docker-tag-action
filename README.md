@@ -16,8 +16,6 @@ Prepare docker tag
 | registry | Docker registry | `true` |  |
 | context | Context directory | `false` | . |
 | image_name | Image name | `false` | ${{ github.event.repository.name }} |
-| mvn_token | Maven token | `false` |  |
-| mvn_username | Maven username | `false` |  |
 
 
 
