@@ -12,7 +12,7 @@ Prepare docker tag
 
 | parameter | description | required | default |
 | - | - | - | - |
-| type | Valid types (node | maven) | `true` |  |
+| type | Valid types (`node` or `maven`) | `true` |  |
 | registry | Docker registry | `true` |  |
 | context | Context directory | `false` | . |
 | image_name | Image name | `false` | ${{ github.event.repository.name }} |

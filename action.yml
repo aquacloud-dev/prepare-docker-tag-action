@@ -3,7 +3,7 @@ description: 'Prepare docker tag'
 inputs:
   type:
     required: true
-    description: 'Valid types (node | maven)'
+    description: 'Valid types (`node` or `maven`)'
   registry:
     required: true
     description: Docker registry
