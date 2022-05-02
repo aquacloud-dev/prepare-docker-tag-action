@@ -93,7 +93,7 @@ runs:
           fi
         fi
 
-        if [[ "${{ input.type }}" == "maven" ]]; then
+        if [[ "${{ inputs.type }}" == "maven" ]]; then
           MANIFEST_VERSION=${{ steps.mvn.outputs.pom_version }}
 
           if [ -z $MANIFEST_VERSION ]; then
