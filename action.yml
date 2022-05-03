@@ -89,21 +89,21 @@ runs:
 
         TAGS="${DOCKER_IMAGE}:${VERSION}"
 
-        if [[ "${{ inputs.type }}" == "node" ]]; then
-          PACKAGEJSON_VERSION=${{ steps.package-version.outputs.version }}
+        # if [[ "${{ inputs.type }}" == "node" ]]; then
+        #   PACKAGEJSON_VERSION=${{ steps.package-version.outputs.version }}
 
-          if [ -z $PACKAGEJSON_VERSION ]; then
-            TAGS="$TAGS,${DOCKER_IMAGE}:${PACKAGEJSON_VERSION}"
-          fi
-        fi
+        #   if [ -z $PACKAGEJSON_VERSION ]; then
+        #     TAGS="$TAGS,${DOCKER_IMAGE}:${PACKAGEJSON_VERSION}"
+        #   fi
+        # fi
 
-        if [[ "${{ inputs.type }}" == "maven" ]]; then
-          MANIFEST_VERSION=${{ steps.mvn.outputs.pom_version }}
+        # if [[ "${{ inputs.type }}" == "maven" ]]; then
+        #   MANIFEST_VERSION=${{ steps.mvn.outputs.pom_version }}
 
-          if [ -z $MANIFEST_VERSION ]; then
-            TAGS="$TAGS,${DOCKER_IMAGE}:${MANIFEST_VERSION}"
-          fi
-        fi
+        #   if [ -z $MANIFEST_VERSION ]; then
+        #     TAGS="$TAGS,${DOCKER_IMAGE}:${MANIFEST_VERSION}"
+        #   fi
+        # fi
 
         if [ -z $BRANCH ]; then
           TAGS="$TAGS,${DOCKER_IMAGE}:${BRANCH}"
