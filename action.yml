@@ -51,9 +51,9 @@ runs:
 
         TAGS="${DOCKER_IMAGE}:${VERSION}"
 
-        if [ -z "${{ inputs.manifest_version }}" ]; then
-          TAGS="$TAGS,${DOCKER_IMAGE}:${{ inputs.manifest_version }}"
-        fi
+        # if [ -z "${{ inputs.manifest_version }}" ]; then
+        TAGS="$TAGS,${DOCKER_IMAGE}:${{ inputs.manifest_version }}"
+        # fi
 
 
         if [ -z $BRANCH ]; then
