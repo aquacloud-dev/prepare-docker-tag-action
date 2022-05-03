@@ -1,9 +1,6 @@
 name: Prepare Tag
 description: 'Prepare docker tag'
 inputs:
-  type:
-    required: true
-    description: 'Valid types (`node` or `maven`)'
   registry:
     required: true
     description: Docker registry
@@ -15,6 +12,9 @@ inputs:
     required: false
     default: ${{ github.event.repository.name }}
     description: Image name
+  manifest_version:
+    required: true
+    description: 'Manifest version (package.json, pom.xml etc)'
 outputs:
   tags:
     description: 'List of docker tags'
@@ -22,34 +22,12 @@ outputs:
   version:
     description: 'List of docker version'
     value: ${{ steps.prepare.outputs.version }}
-  mvnVersion:
+  manifest_version:
     description: 'List of maven version'
-    value: ${{ steps.prepare.outputs.mvnVersion }}
-  pkgVersion:
-    description: 'List of package version'
-    value: ${{ steps.prepare.outputs.pkgVersion }}
+    value: ${{ steps.prepare.outputs.manifest_version }}
 runs:
   using: composite
   steps:
-    -
-      name: Read Package Version
-      if: ${{ inputs.type == 'node' }}
-      id: package-version
-      uses: martinbeentjes/npm-get-version-action@main
-      with:
-        path: ${{ inputs.context }}
-    -
-      name: Set up JDK 17
-      uses: actions/setup-java@v1
-      if: ${{ inputs.type == 'maven' }}
-      with:
-        java-version: 17
-    -
-      id: mvn
-      shell: bash
-      name: Read version via mvn
-      if: ${{ inputs.type == 'maven' }}
-      run: echo ::set-output name=pom_version::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT//g')
     -
       id: prepare
       name: Prepare
@@ -73,21 +51,10 @@ runs:
 
         TAGS="${DOCKER_IMAGE}:${VERSION}"
 
-        if [[ "${{ inputs.type }}" == "node" ]]; then
-          PACKAGEJSON_VERSION=${{ steps.package-version.outputs.version }}
-
-          if [ -z $PACKAGEJSON_VERSION ]; then
-            TAGS="$TAGS,${DOCKER_IMAGE}:${PACKAGEJSON_VERSION}"
-          fi
+        if [ -z "${{ inputs.manifest_version }}" ]; then
+          TAGS="$TAGS,${DOCKER_IMAGE}:${{ inputs.manifest_version }}"
         fi
 
-        if [[ "${{ inputs.type }}" == "maven" ]]; then
-          MANIFEST_VERSION=${{ steps.mvn.outputs.pom_version }}
-
-          if [ -z $MANIFEST_VERSION ]; then
-            TAGS="$TAGS,${DOCKER_IMAGE}:${MANIFEST_VERSION}"
-          fi
-        fi
 
         if [ -z $BRANCH ]; then
           TAGS="$TAGS,${DOCKER_IMAGE}:${BRANCH}"
@@ -99,7 +66,6 @@ runs:
           TAGS="$TAGS,${DOCKER_IMAGE}:${MINOR},${DOCKER_IMAGE}:${MAJOR},${DOCKER_IMAGE}:latest"
         fi
 
-        echo ::set-output name=mvnVersion::${MANIFEST_VERSION}
-        echo ::set-output name=pkgVersion::${PACKAGEJSON_VERSION}
+        echo ::set-output name=manifest_version::${{ inputs.manifest_version }}
         echo ::set-output name=version::${VERSION}
         echo ::set-output name=tags::${TAGS}
