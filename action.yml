@@ -50,22 +50,22 @@ runs:
       name: Read version via mvn
       if: ${{ inputs.type == 'maven' }}
       run: echo ::set-output name=pom_version::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT//g')
-    -
-      id: prepare-js
-      name: PrepareJS
-      uses: actions/github-script@v6
-      with:
-        script: |
-          const script = require('./scripts/tag.js')
-          return script({ github, context })({
-            type: "${{ inputs.type }}",
-            registry: "${{ inputs.registry }}",
-            imageName: "${{ inputs.image_name }}",
-            steps: {
-              packageVersion: ${{ steps.package-version.outputs.version }},
-              pomVersion: ${{ steps.mvn.outputs.pom_version }},
-            }
-          })
+    # -
+    #   id: prepare-js
+    #   name: PrepareJS
+    #   uses: actions/github-script@v6
+    #   with:
+    #     script: |
+    #       const script = require('./scripts/tag.js')
+    #       return script({ github, context })({
+    #         type: "${{ inputs.type }}",
+    #         registry: "${{ inputs.registry }}",
+    #         imageName: "${{ inputs.image_name }}",
+    #         steps: {
+    #           packageVersion: ${{ steps.package-version.outputs.version }},
+    #           pomVersion: ${{ steps.mvn.outputs.pom_version }},
+    #         }
+    #       })
     -
       id: prepare
       name: Prepare
