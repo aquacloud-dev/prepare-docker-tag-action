@@ -12,10 +12,10 @@ Prepare docker tag
 
 | parameter | description | required | default |
 | - | - | - | - |
-| type | Valid types (`node` or `maven`) | `true` |  |
 | registry | Docker registry | `true` |  |
 | context | Context directory | `false` | . |
 | image_name | Image name | `false` | ${{ github.event.repository.name }} |
+| manifest_version | Manifest version (package.json, pom.xml etc) | `true` |  |
 
 
 
@@ -28,8 +28,7 @@ Prepare docker tag
 | - | - |
 | tags | List of docker tags |
 | version | List of docker version |
-| mvnVersion | List of maven version |
-| pkgVersion | List of package version |
+| manifest_version | List of maven version |
 
 
 
