@@ -18,16 +18,16 @@ inputs:
 outputs:
   tags:
     description: 'List of docker tags'
-    value: ${{ steps.prepare-js.outputs.tags }}
+    value: ${{ steps.prepare.outputs.tags }}
   version:
     description: 'List of docker version'
-    value: ${{ steps.prepare-js.outputs.version }}
+    value: ${{ steps.prepare.outputs.version }}
   mvnVersion:
     description: 'List of maven version'
-    value: ${{ steps.prepare-js.outputs.mvnVersion }}
+    value: ${{ steps.prepare.outputs.mvnVersion }}
   pkgVersion:
     description: 'List of package version'
-    value: ${{ steps.prepare-js.outputs.pkgVersion }}
+    value: ${{ steps.prepare.outputs.pkgVersion }}
 runs:
   using: composite
   steps:
